@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
+using System.Web;
 using Xunit;
 using AspMvcBasementHelloWorld;
 using AspMvcBasementHelloWorld.Controllers;
@@ -29,11 +31,20 @@ namespace MvcProjectTests
             appHost.Start(browsingSession =>
             {
 
+                //Arrange
                 string url = ""; //relative to web site root
-                RequestResult result = browsingSession.Get(url);
+                string clientIP = "192.168.2.32";
+
+                WorkerRequestSettings rqstSettings = new WorkerRequestSettings(url, WorkerRequestSettings.httpRequestMethods.GET);
+                rqstSettings.clientIpAddress = clientIP;
+
+                //Act
+                RequestResult result = browsingSession.ProcessRequest(rqstSettings);
                 var viewResult = (ViewResult)result.ActionExecutedContext.Result;
+
+                //Assert
                 Assert.Equal("Index", viewResult.ViewName);
-                Assert.Equal("192.168.1.121", viewResult.ViewData["result"]);
+                Assert.Equal(clientIP, viewResult.ViewData["result"]);
             });
         }
 
@@ -42,13 +53,20 @@ namespace MvcProjectTests
         {
             appHost.Start(browsingSession =>
             {
+                //Arrange
                 string url = ""; //relative to web site root
-                RequestResult result = browsingSession.Post(url, new
-                {
-                    SubmitBtn = "Submit",
-                    SomeTextBox = "hop-hop",
-                });
+
+                WorkerRequestSettings rqstSettings = new WorkerRequestSettings(url, WorkerRequestSettings.httpRequestMethods.POST);
+                rqstSettings.formValues = new NameValueCollection { 
+                                                                    { "SubmitBtn", "Submit" }, 
+                                                                    { "SomeTextBox", "hop-hop" } 
+                                                                  };
+
+                //Act
+                RequestResult result = browsingSession.ProcessRequest(rqstSettings);
                 var viewResult = (ViewResult)result.ActionExecutedContext.Result;
+
+                //Assert
                 Assert.Equal("Index", viewResult.ViewName);
                 Assert.Equal("Submit", viewResult.ViewData["result"]);
             });

@@ -11,8 +11,6 @@ namespace AspMvcBasementHelloWorld.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            string ausgabe = "GET returns IP: " + this.Request.UserHostAddress;
-            ausgabe += "<br><br><br><form name=\"mvcForm\" method=\"post\" action=\"\"><input type=\"submit\" name=\"SubmitBtn\" value=\"Submit\" /></form>";
             ViewBag.result = this.Request.UserHostAddress;
             return View();
         }
@@ -21,10 +19,7 @@ namespace AspMvcBasementHelloWorld.Controllers
         [ActionName("Index")]
         public ActionResult Index_Post()
         {
-            string ausgabe = "POST returns Texst of the SubmitBtn: " + this.Request.Form["SubmitBtn"];
-            ausgabe += "<br><br><br><form name=\"mvcForm\" method=\"post\" action=\"\"><input type=\"submit\" name=\"SubmitBtn\" value=\"Submit\" /></form>";
             ViewBag.result = this.Request.Form["SubmitBtn"];
-            //return ausgabe;
             return View();
         }
     }
