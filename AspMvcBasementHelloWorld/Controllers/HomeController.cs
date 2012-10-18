@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AspMvcBasementHelloWorld.ViewModels;
 
 namespace AspMvcBasementHelloWorld.Controllers
 {
@@ -11,15 +12,14 @@ namespace AspMvcBasementHelloWorld.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            ViewBag.result = this.Request.UserHostAddress;
-            return View();
+            var viewModel = new DialogueModel();
+            return View(viewModel);
         }
 
         [HttpPost]
         [ActionName("Index")]
         public ActionResult Index_Post()
         {
-            ViewBag.result = this.Request.Form["SubmitBtn"];
             return View();
         }
     }
