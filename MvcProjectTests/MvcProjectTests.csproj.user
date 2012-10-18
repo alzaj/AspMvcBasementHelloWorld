@@ -6,4 +6,7 @@
     <StartWorkingDirectory>C:\Users\zajcev\dev_apps\testapps\AspMvcBasementHelloWorld\MvcProjectTests\bin\Debug\</StartWorkingDirectory>
     <StartArguments>MvcProjectTests.dll</StartArguments>
   </PropertyGroup>
+  <PropertyGroup>
+    <ProjectView>ShowAllFiles</ProjectView>
+  </PropertyGroup>
 </Project>
