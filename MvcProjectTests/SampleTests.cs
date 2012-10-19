@@ -12,6 +12,7 @@ using MvcIntegrationTestFramework.Browsing;
 using MvcIntegrationTestFramework.Hosting;
 using MvcIntegrationTestFramework.Interception;
 
+//This line is unusable. Delete it please
 namespace MvcProjectTests
 {
     public class SampleTests
