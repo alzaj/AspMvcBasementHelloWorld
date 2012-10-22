@@ -17,6 +17,7 @@ using MvcIntegrationTestFramework.Interception;
 namespace MvcProjectTests
 {
     [CustomTestClassCommand]
+    [TestCategory("Integration"), TestCategory("Class_Index_NewSession")]
     public class Index_NewSession
     {
         public Index_NewSession()
@@ -68,10 +69,5 @@ namespace MvcProjectTests
             });
         }
 
-        [Fact]
-        public void ThisMethodHasNoCategory()
-        {
-            Xunit.Assert.True(false);
-        }
     }
 }

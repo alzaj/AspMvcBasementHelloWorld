@@ -4,13 +4,12 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Web;
-using System.Web.Mvc;
 using Xunit;
 using Xunit.Extensions;
-using Xunit.Sdk;
 using AspMvcBasementHelloWorld;
 using AspMvcBasementHelloWorld.Controllers;
 using AspMvcBasementHelloWorld.ViewModels;
+using System.Web.Mvc;
 using MvcIntegrationTestFramework.Browsing;
 using MvcIntegrationTestFramework.Hosting;
 using MvcIntegrationTestFramework.Interception;
@@ -18,20 +17,12 @@ using MvcIntegrationTestFramework.Interception;
 namespace MvcProjectTests
 {
     [CustomTestClassCommand]
-    [TestCategory("Unit"), TestCategory("Class_SampleIntegrationTests")]
-    public class SampleIntegrationTests
+    [TestCategory("Unit"), TestCategory("DialogView_InitialCall")]
+    class DialogView_InitialCall
     {
-
         [Fact]
-        public void FastTest()
-        {
-            Xunit.Assert.True(true);
-        }
-
-        [Fact]
-        public void SlowTest()
-        {
-            Xunit.Assert.True(true);
+        public void Index_GET()
+        { 
         }
     }
 }
