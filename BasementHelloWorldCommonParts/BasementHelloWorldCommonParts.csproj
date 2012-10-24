@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>c9de2e7f-cfa1-4a38-ad93-22142ca1055c</ProjectGuid>
+    <ProjectGuid>{B929E7A2-12BF-414B-94A8-854E0991B743}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BasementHelloWorldCommonParts</RootNamespace>
@@ -40,9 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="HelloWorldStructures\IdDescriptionPaar.cs" />
+    <Compile Include="UA_Processors\Dialog_UserActions.cs" />
+    <Compile Include="UI\I_IdDescriptionPaar.cs" />
+    <Compile Include="UI\I_OpaView.cs" />
+    <Compile Include="UI\I_UI_DialogWithUser.cs" />
+    <Compile Include="UI\Mock_UI_DialogWithUser.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

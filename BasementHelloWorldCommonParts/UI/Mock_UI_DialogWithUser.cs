@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using BasementHelloWorldCommonParts.UI;
+using System.Text;
+using BasementHelloWorldCommonParts.HelloWorldStructures;
 
-namespace AspMvcBasementHelloWorld.ViewModels
+namespace BasementHelloWorldCommonParts.UI
 {
-    public class DialogueModel : I_UI_DialogWithUser
+    public class Mock_UI_DialogWithUser : I_UI_DialogWithUser
     {
-#region I_UI_DialogWithUser
+
         int I_OpaView.viewID
         {
             get { return 1; }
-            set { }
+            set {}
         }
 
         private string _selectedLanguage = "";
         string I_UI_DialogWithUser.selectedLanguage
         {
-            get { return _selectedLanguage; }
-            set { _selectedLanguage = value; }
+            get{return _selectedLanguage;}
+            set{ _selectedLanguage = value;}
         }
 
         private List<I_IdDescriptionPaar> _avaliableLanguages = new List<I_IdDescriptionPaar> 
@@ -29,7 +29,6 @@ namespace AspMvcBasementHelloWorld.ViewModels
                 new BasementHelloWorldCommonParts.HelloWorldStructures.IdDescriptionPaar{ shortID="fr", description="Français"},
                 new BasementHelloWorldCommonParts.HelloWorldStructures.IdDescriptionPaar{ shortID="ru", description="Русский"}
         };
-
         List<I_IdDescriptionPaar> I_UI_DialogWithUser.avaliableLanguages
         {
             get { return _avaliableLanguages; }
@@ -64,16 +63,16 @@ namespace AspMvcBasementHelloWorld.ViewModels
 
         private bool _greetingVisible = false;
         bool I_UI_DialogWithUser.greetingVisible
-{
-    get
-    {
-        return _greetingVisible;
-    }
-    set
-    {
-        _greetingVisible = value;
-    }
-}
+        {
+            get
+            {
+                return _greetingVisible;
+            }
+            set
+            {
+                _greetingVisible = value;
+            }
+        }
 
 
         string I_UI_DialogWithUser.helloUserMessageText
@@ -101,18 +100,19 @@ namespace AspMvcBasementHelloWorld.ViewModels
             }
         }
 
+
         private string _userName = "";
         string I_UI_DialogWithUser.userName
-{
-    get
-    {
-        return _userName;
-    }
-    set
-    {
-        _userName = value;
-    }
-}
+        {
+            get
+            {
+                return _userName;
+            }
+            set
+            {
+                _userName = value;
+            }
+        }
 
         string I_UI_DialogWithUser.actionExplanation_TellUserName { get { return "Report name"; } set { } }
 
@@ -129,48 +129,5 @@ namespace AspMvcBasementHelloWorld.ViewModels
             }
         }
 
-        #endregion //I_UI_DialogWithUser
-
-        private int _languagesCount = 4;
-        public int languagesCount
-        {
-            get { return _languagesCount; }
-            set { _languagesCount = value; }
-        }
-
-#region Html controls names
-
-        public static string SetLanguageButtonName
-        {
-            get { return "SetLanguageButton"; }
-        }
-
-        public static string languageDropDownName
-        {
-            get { return "languagesDDL"; }
-        }
-
-        public static string reportNameTextBoxName
-        {
-            get { return "reportNameTB"; }
-        }
-
-        public static string reportNameButtonName
-        {
-            get { return "reportNameBtn"; }
-        }
-        
-#endregion //Html controls names
-
-
-        public string GetSelectedAttributeForLanguage(string language)
-        {
-            string ausgabe = "";
-            if (language == _selectedLanguage)
-            {
-                ausgabe = "selected=\"selected\" ";
-            }
-            return ausgabe;
-        }
-    }
+}
 }
