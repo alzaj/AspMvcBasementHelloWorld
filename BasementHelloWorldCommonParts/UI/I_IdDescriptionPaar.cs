@@ -7,9 +7,7 @@ namespace BasementHelloWorldCommonParts.UI
 {
     public interface I_IdDescriptionPaar : I_OpaView
     {
-
-        string shortID { get; set; }
-        string description { get; set; }
-
+        string strProp_shortID { get; set; }
+        string strProp_description { get; set; }
     }
 }

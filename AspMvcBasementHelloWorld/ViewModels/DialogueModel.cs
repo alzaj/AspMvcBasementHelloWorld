@@ -3,42 +3,80 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using BasementHelloWorldCommonParts.UI;
+using BasementHelloWorldCommonParts.HelloWorldStructures;
 
 namespace AspMvcBasementHelloWorld.ViewModels
 {
-    public class DialogueModel : I_UI_DialogWithUser
+    public class DialogueModel : OpaView, I_UI_DialogWithUser
     {
-#region I_UI_DialogWithUser
-        int I_OpaView.viewID
+
+        public DialogueModel()
         {
-            get { return 1; }
-            set { }
+            //init available languages
+            List<int> tmp = subViews_avaliableLanguages;
         }
 
+#region I_UI_DialogWithUser
+
         private string _selectedLanguage = "";
-        string I_UI_DialogWithUser.selectedLanguage
+        public string strProp_selectedLanguage
         {
             get { return _selectedLanguage; }
             set { _selectedLanguage = value; }
         }
 
-        private List<I_IdDescriptionPaar> _avaliableLanguages = new List<I_IdDescriptionPaar> 
-        {
-                new BasementHelloWorldCommonParts.HelloWorldStructures.IdDescriptionPaar{ shortID="de", description="Deutsch"},
-                new BasementHelloWorldCommonParts.HelloWorldStructures.IdDescriptionPaar{ shortID="en", description="English"},
-                new BasementHelloWorldCommonParts.HelloWorldStructures.IdDescriptionPaar{ shortID="fr", description="Français"},
-                new BasementHelloWorldCommonParts.HelloWorldStructures.IdDescriptionPaar{ shortID="ru", description="Русский"}
-        };
 
-        List<I_IdDescriptionPaar> I_UI_DialogWithUser.avaliableLanguages
+        private Dictionary<string, string> _avaliableLanguages
         {
-            get { return _avaliableLanguages; }
-            set { _avaliableLanguages = value; }
+            get
+            {
+                Dictionary<string, string> ausgabe = new Dictionary<string, string>();
+
+                ausgabe.Add("de", "Deutsch");
+                ausgabe.Add("en", "English");
+                ausgabe.Add("fr", "Français");
+                ausgabe.Add("ru", "Русский");
+
+                return ausgabe;
+            }
         }
 
-        string I_UI_DialogWithUser.actionExplanation_SelectLanguage { get { return "Use selected language"; } set { } }
+        private List<int> _subViews_available = new List<int>();
+        public List<int> subViews_avaliableLanguages
+        {
+            get
+            {
+                List<int> ausgabe = new List<int>();
+                ausgabe.AddRange(_subViews_available);
 
-        bool I_UI_DialogWithUser.isActionPossible_SelectLanguage
+                foreach (KeyValuePair<string, string> lang in _avaliableLanguages)
+                {
+                    bool isLangAdded = false;
+                    foreach (int aID in _subViews_available)
+                    {
+                        if (ViewStateManager.getViewFromViewState<IdDescriptionPaar>(aID).strProp_shortID == lang.Key)
+                        {
+                            isLangAdded = true;
+                            break;
+                        }
+                    }
+                    if (!isLangAdded)
+                    {
+                        IdDescriptionPaar newLang = new IdDescriptionPaar { strProp_shortID = lang.Key, strProp_description = lang.Value };
+                        _subViews_available.Add(newLang.viewID);
+                        ViewStateManager.saveViewToViewState(newLang);
+                        ausgabe.Add(newLang.viewID);
+                    }
+                }
+                return ausgabe;
+            }
+            set { _subViews_available = value; }
+        }
+
+
+        public string strProp_actionExplanation_SelectLanguage { get { return "Use selected language"; } set { } }
+
+       public bool boolProp_isActionPossible_SelectLanguage
         {
             get
             {
@@ -50,7 +88,7 @@ namespace AspMvcBasementHelloWorld.ViewModels
             }
         }
 
-        string I_UI_DialogWithUser.greetingText
+        public string strProp_greetingText
         {
             get
             {
@@ -63,7 +101,7 @@ namespace AspMvcBasementHelloWorld.ViewModels
         }
 
         private bool _greetingVisible = false;
-        bool I_UI_DialogWithUser.greetingVisible
+       public bool boolProp_greetingVisible
 {
     get
     {
@@ -76,7 +114,7 @@ namespace AspMvcBasementHelloWorld.ViewModels
 }
 
 
-        string I_UI_DialogWithUser.helloUserMessageText
+        public string strProp_helloUserMessageText
         {
             get
             {
@@ -89,7 +127,7 @@ namespace AspMvcBasementHelloWorld.ViewModels
         }
 
         private bool _helloUserMessageVisible = false;
-        bool I_UI_DialogWithUser.helloUserMessageVisible
+       public bool boolProp_helloUserMessageVisible
         {
             get
             {
@@ -102,7 +140,7 @@ namespace AspMvcBasementHelloWorld.ViewModels
         }
 
         private string _userName = "";
-        string I_UI_DialogWithUser.userName
+        public string strProp_userName
 {
     get
     {
@@ -114,10 +152,10 @@ namespace AspMvcBasementHelloWorld.ViewModels
     }
 }
 
-        string I_UI_DialogWithUser.actionExplanation_TellUserName { get { return "Report name"; } set { } }
+        public string strProp_actionExplanation_TellUserName { get { return "Report name"; } set { } }
 
         private bool _isActionPossible_TellUserName = false;
-        bool I_UI_DialogWithUser.isActionPossible_TellUserName
+       public bool boolProp_isActionPossible_TellUserName
         {
             get
             {

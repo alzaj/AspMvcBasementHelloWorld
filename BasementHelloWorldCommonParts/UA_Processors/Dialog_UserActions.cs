@@ -2,18 +2,43 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using BasementHelloWorldCommonParts.UI; 
+using BasementHelloWorldCommonParts.UI;
+using BasementHelloWorldCommonParts.HelloWorldStructures;
 
 namespace BasementHelloWorldCommonParts.UA_Processors
 {
-    public class Dialog_UserActions
+    public class Dialog_UserActions //<T_ViewType> where T_ViewType : OpaView, I_UI_DialogWithUser, new()
     {
-        public Dialog_UserActions(I_UI_DialogWithUser userView)
+        public const int defaultViewID = 1;
+
+        public Dialog_UserActions(I_UI_DialogWithUser view)
         {
-            UserView = userView;
+            _UserView = view;
         }
 
-        public I_UI_DialogWithUser UserView;
+        private int _userViewID
+        {
+            get
+            {
+                if (_UserView == null) { return 0; }
+                else { return _UserView.viewID; }
+            }
+            set
+            {
+                if (value == 0) { throw new ArgumentException("ViewID cannot be Null"); }
+                else
+                {
+                    _UserView = ViewStateManager.getViewFromViewState<Mock_UI_DialogWithUser>(value);
+                }
+            }
+        }
+
+        private I_UI_DialogWithUser _UserView;
+
+        public I_UI_DialogWithUser UserView
+        {
+            get { return _UserView; }
+        }
 
         public bool isValidLanguage(string language)
         {
@@ -34,10 +59,12 @@ namespace BasementHelloWorldCommonParts.UA_Processors
             //return new string[] { "de", "en", "fr", "ru" };
 
             List<string> ausgabe = new List<string>();
-            foreach (I_IdDescriptionPaar sprache in UserView.avaliableLanguages)
+            foreach (int spracheID in UserView.subViews_avaliableLanguages)
             {
-                ausgabe.Add(sprache.shortID);
+                IdDescriptionPaar tmpSprache = ViewStateManager.getViewFromViewState<IdDescriptionPaar>(spracheID);
+                ausgabe.Add(tmpSprache.strProp_shortID);
             }
+
             return ausgabe;
         }
 
@@ -48,23 +75,19 @@ namespace BasementHelloWorldCommonParts.UA_Processors
 
         public string GetHelloUserMessage()
         {
-            return "ToDo GetHelloUserMessage(" + UserView.userName + ")";
+            return "ToDo GetHelloUserMessage(" + UserView.strProp_userName + ")";
         }
 
         #region UserActions help methods
 
-        public class LocalUserAction
+        private UserActionsQuery _userActionsQuery = new UserActionsQuery();
+
+        public void AddUserAction(int hostViewID, OpaUserAction action)
         {
+            _userActionsQuery.AddUserAction(hostViewID, action);
         }
 
-        private List<LocalUserAction> _userActionsQuery = new List<LocalUserAction>();
-
-        public void AddUserAction(LocalUserAction action)
-        {
-            _userActionsQuery.Add(action);
-        }
-
-        public void InvokeUserAction(LocalUserAction action)
+        public void InvokeUserAction(OpaUserAction action)
         {
             if (action is Action_SetSelectedLanguage)
             {
@@ -87,36 +110,56 @@ namespace BasementHelloWorldCommonParts.UA_Processors
             _userActionsQuery.Clear();
         }
 
-        public void InvokeUserActions(List<LocalUserAction> actions)
+        public void InvokeUserActions(UserActionsQuery actionsQuery)
         {
-            foreach (LocalUserAction act in actions)
+            foreach (OpaUserAction act in actionsQuery.actions)
             {
                 InvokeUserAction(act);
             }
+
+            ViewStateManager.saveViewToViewState(UserView);
         }
 
         #endregion //UserActions help functions
 
         #region UserActions
 
-        public class Action_SetSelectedLanguage : LocalUserAction
+        public class Action_SetSelectedLanguage : OpaUserAction
         {
             public string newLang = "";
         }
 
-        public class Action_ReportUserName : LocalUserAction
+        public class Action_ReportUserName : OpaUserAction
         {
             public string userName = "";
         }
 
         private void SetSelectedLanguage(Action_SetSelectedLanguage act)
         {
-            if (!isValidLanguage(act.newLang)) act.newLang = "";
-            if (!String.IsNullOrEmpty(act.newLang) && !(UserView.selectedLanguage == act.newLang))
+            if (!isValidLanguage(act.newLang))
             {
-                if (String.IsNullOrEmpty(UserView.userName))
+                act.newLang = "";
+            }
+            else
+            {
+                //debug: set last selected attachement
+                foreach (int spracheID in UserView.subViews_avaliableLanguages)
                 {
-                    UserView.greetingText = GetGreetingForLanguage(act.newLang);
+                    IdDescriptionPaar tmpSprache = ViewStateManager.getViewFromViewState<IdDescriptionPaar>(spracheID);
+                    if (tmpSprache.strProp_shortID == act.newLang)
+                    {
+                        string newDescr = tmpSprache.strProp_description.Split(new char[] { '(' })[0];
+                        tmpSprache.strProp_description = newDescr + "(last selected at " + DateTime.Now.ToString("HH:mm)");
+                        ViewStateManager.saveViewToViewState(tmpSprache);
+                    }
+                }
+            }
+                
+            if (!String.IsNullOrEmpty(act.newLang) && !(UserView.strProp_selectedLanguage == act.newLang))
+            {
+                if (String.IsNullOrEmpty(UserView.strProp_userName))
+                {
+                    UserView.strProp_greetingText = GetGreetingForLanguage(act.newLang);
                     SetGuiElementsVisiblity(2);
                 }
                 else
@@ -127,29 +170,29 @@ namespace BasementHelloWorldCommonParts.UA_Processors
             }
             else if (String.IsNullOrEmpty(act.newLang))
             {
-                UserView.greetingText = "";
+                UserView.strProp_greetingText = "";
                 SetGuiElementsVisiblity(1);
             }
             else
             {
             }
 
-            UserView.selectedLanguage = act.newLang;
+            UserView.strProp_selectedLanguage = act.newLang;
         }
 
         private void ReportUserName(Action_ReportUserName act)
         {
-            if (!(string.IsNullOrEmpty(UserView.selectedLanguage)) && !(string.IsNullOrEmpty(act.userName.Trim())))
+            if (!(string.IsNullOrEmpty(UserView.strProp_selectedLanguage)) && !(string.IsNullOrEmpty(act.userName.Trim())))
             {
-                UserView.userName = act.userName;
-                UserView.helloUserMessageText = GetHelloUserMessage();
+                UserView.strProp_userName = act.userName;
+                UserView.strProp_helloUserMessageText = GetHelloUserMessage();
                 SetGuiElementsVisiblity(3);
             }
             else if (string.IsNullOrEmpty(act.userName.Trim()))
             {
                 SetGuiElementsVisiblity(2);
             }
-            else if (string.IsNullOrEmpty(UserView.selectedLanguage))
+            else if (string.IsNullOrEmpty(UserView.strProp_selectedLanguage))
             {
                 SetGuiElementsVisiblity(1);
             }
@@ -161,19 +204,19 @@ namespace BasementHelloWorldCommonParts.UA_Processors
             switch (stateNr)
             {
                 case 1: //application start. no language selected. all elements invisible (except language ddl)
-                    UserView.greetingVisible = false;
-                    UserView.isActionPossible_TellUserName = false;
-                    UserView.helloUserMessageVisible = false;
+                    UserView.boolProp_greetingVisible = false;
+                    UserView.boolProp_isActionPossible_TellUserName = false;
+                    UserView.boolProp_helloUserMessageVisible = false;
                     break;
                 case 2: //language selected. it's possible to submit the name
-                    UserView.greetingVisible = true;
-                    UserView.isActionPossible_TellUserName = true;
-                    UserView.helloUserMessageVisible = false;
+                    UserView.boolProp_greetingVisible = true;
+                    UserView.boolProp_isActionPossible_TellUserName = true;
+                    UserView.boolProp_helloUserMessageVisible = false;
                     break;
                 case 3: //language selected, name submitted. appears hello greeting and user can restar/abbort dialogue
-                    UserView.greetingVisible = false;
-                    UserView.isActionPossible_TellUserName = false;
-                    UserView.helloUserMessageVisible = true;
+                    UserView.boolProp_greetingVisible = false;
+                    UserView.boolProp_isActionPossible_TellUserName = false;
+                    UserView.boolProp_helloUserMessageVisible = true;
                     break;
                 default:
                     throw new ArgumentException("Invalid selection");

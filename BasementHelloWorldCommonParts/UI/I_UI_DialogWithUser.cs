@@ -7,23 +7,22 @@ namespace BasementHelloWorldCommonParts.UI
 {
     public interface I_UI_DialogWithUser : I_OpaView
     {
-        string selectedLanguage { get; set; }
+        string strProp_selectedLanguage { get; set; }
+        List<int> subViews_avaliableLanguages { get; set; }
 
-        List<I_IdDescriptionPaar> avaliableLanguages { get; set; }
+        string strProp_actionExplanation_SelectLanguage { get; set; }
+        bool boolProp_isActionPossible_SelectLanguage { get; set; }
 
-        string actionExplanation_SelectLanguage { get; set; }
-        bool isActionPossible_SelectLanguage { get; set; }
+        string strProp_greetingText { get; set; }
+        bool boolProp_greetingVisible { get; set; }
 
-        string greetingText { get; set; }
-        bool greetingVisible { get; set; }
+        string strProp_userName { get; set; }
 
-        string userName { get; set; }
+        string strProp_actionExplanation_TellUserName { get; set; }
+        bool boolProp_isActionPossible_TellUserName { get; set; }
 
-        string actionExplanation_TellUserName { get; set; }
-        bool isActionPossible_TellUserName { get; set; }
-
-        string helloUserMessageText { get; set; }
-        bool helloUserMessageVisible { get; set; }
+        string strProp_helloUserMessageText { get; set; }
+        bool boolProp_helloUserMessageVisible { get; set; }
 
     }
 }

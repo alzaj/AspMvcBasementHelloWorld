@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HelloWorldStructures\OpaUserAction.cs" />
+    <Compile Include="HelloWorldStructures\UserActionsQuery.cs" />
+    <Compile Include="HelloWorldStructures\ViewStateManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HelloWorldStructures\IdDescriptionPaar.cs" />
     <Compile Include="UA_Processors\Dialog_UserActions.cs" />
@@ -47,6 +50,7 @@
     <Compile Include="UI\I_OpaView.cs" />
     <Compile Include="UI\I_UI_DialogWithUser.cs" />
     <Compile Include="UI\Mock_UI_DialogWithUser.cs" />
+    <Compile Include="UI\OpaView.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

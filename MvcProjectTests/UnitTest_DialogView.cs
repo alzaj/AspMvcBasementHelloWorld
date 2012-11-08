@@ -16,6 +16,7 @@ using MvcIntegrationTestFramework.Interception;
 using BasementHelloWorldCommonParts;
 using BasementHelloWorldCommonParts.UI;
 using BasementHelloWorldCommonParts.UA_Processors;
+using BasementHelloWorldCommonParts.HelloWorldStructures;
 
 namespace MvcProjectTests
 {
@@ -29,15 +30,15 @@ namespace MvcProjectTests
         { 
             //Arrange
             string newLang = "de";
-            Dialog_UserActions processor = Get_Dialog_UserActions();
-            processor.UserView.selectedLanguage = "";
+            Dialog_UserActions processor = Get_Dialog_UserActions(0);
+            Assert.Equal( processor.UserView.strProp_selectedLanguage, "");
             
             //Act
             processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_SetSelectedLanguage { newLang = newLang });
 
 
             //Assert
-            Assert.Equal(newLang, processor.UserView.selectedLanguage);
+            Assert.Equal(newLang, processor.UserView.strProp_selectedLanguage);
         }
 
         [Fact]
@@ -46,38 +47,37 @@ namespace MvcProjectTests
             //Arrange
             foreach (string s in new string[] {"xx", ""} ){
                 string newLang = s;
-                Dialog_UserActions processor = Get_Dialog_UserActions();
-                processor.UserView.selectedLanguage = "";
+                Dialog_UserActions processor = Get_Dialog_UserActions(0);
+                Assert.Equal(processor.UserView.strProp_selectedLanguage, "");
 
                 //Act
                 processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_SetSelectedLanguage { newLang = s });
 
 
                 //Assert
-                Assert.Equal("", processor.UserView.selectedLanguage);
+                Assert.Equal("", processor.UserView.strProp_selectedLanguage);
                 //Resetting all dialogue fields
-                Assert.False(processor.UserView.isActionPossible_TellUserName);
-                Assert.False(processor.UserView.greetingVisible);
+                Assert.False(processor.UserView.boolProp_isActionPossible_TellUserName);
+                Assert.False(processor.UserView.boolProp_greetingVisible);
             }
         }
-        #endregion //Tests
 
         [Fact]
         public void SelectValidLanguage_UserNameUnknown()
         {
             //Arrange
             string newLang = "de";
-            Dialog_UserActions processor = Get_Dialog_UserActions();
-            processor.UserView.selectedLanguage = "";
-            processor.UserView.userName = "";
+            Dialog_UserActions processor = Get_Dialog_UserActions(0);
+            Assert.Equal(processor.UserView.strProp_selectedLanguage, "");
+            Assert.Equal(processor.UserView.strProp_userName, "");
 
             //Act
             processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_SetSelectedLanguage { newLang = newLang });
 
             //Assert
-            Assert.Equal(newLang, processor.UserView.selectedLanguage);
-            Assert.True(processor.UserView.greetingVisible);
-            Assert.True(processor.UserView.isActionPossible_TellUserName);
+            Assert.Equal(newLang, processor.UserView.strProp_selectedLanguage);
+            Assert.True(processor.UserView.boolProp_greetingVisible);
+            Assert.True(processor.UserView.boolProp_isActionPossible_TellUserName);
         }
 
         [Fact]
@@ -85,17 +85,21 @@ namespace MvcProjectTests
         {
             //Arrange
             string newUserName = "Fransois";
-            Dialog_UserActions processor = Get_Dialog_UserActions();
-            processor.UserView.selectedLanguage = "fr";
+            Dialog_UserActions processor = Get_Dialog_UserActions(0);
+            Assert.Equal(processor.UserView.strProp_selectedLanguage, "");
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_SetSelectedLanguage { newLang = "fr" });
+            ViewStateManager.saveViewToViewState(processor.UserView);
+            int viewID = processor.UserView.viewID;
 
             //Act
+            processor = Get_Dialog_UserActions(viewID);
             processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_ReportUserName { userName = newUserName });
 
             //Assert
-            Assert.Equal(newUserName, processor.UserView.userName);
-            Assert.False(processor.UserView.greetingVisible);
-            Assert.False(processor.UserView.isActionPossible_TellUserName);
-            Assert.True(processor.UserView.helloUserMessageVisible);
+            Assert.Equal(newUserName, processor.UserView.strProp_userName);
+            Assert.False(processor.UserView.boolProp_greetingVisible);
+            Assert.False(processor.UserView.boolProp_isActionPossible_TellUserName);
+            Assert.True(processor.UserView.boolProp_helloUserMessageVisible);
         }
 
         [Fact]
@@ -103,18 +107,23 @@ namespace MvcProjectTests
         {
             //Arrange
             string newLang = "de";
-            Dialog_UserActions processor = Get_Dialog_UserActions();
-            processor.UserView.selectedLanguage = "fr";
-            processor.UserView.userName = "Fransois";
+            Dialog_UserActions processor = Get_Dialog_UserActions(0);
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_SetSelectedLanguage { newLang = "fr" });
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_ReportUserName { userName = "Fransois" });
+            ViewStateManager.saveViewToViewState(processor.UserView);
+            int viewID = processor.UserView.viewID;
 
             //Act
+            processor = Get_Dialog_UserActions(viewID);
             processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_SetSelectedLanguage { newLang = newLang });
 
             //Assert
-            Assert.Equal(newLang, processor.UserView.selectedLanguage);
-            Assert.False(processor.UserView.greetingVisible);
-            Assert.False(processor.UserView.isActionPossible_TellUserName);
+            Assert.Equal(newLang, processor.UserView.strProp_selectedLanguage);
+            Assert.False(processor.UserView.boolProp_greetingVisible);
+            Assert.False(processor.UserView.boolProp_isActionPossible_TellUserName);
         }
+        
+        #endregion //Tests
 
         #region TestsSetup
         public I_UI_DialogWithUser GetI_UI_DialogWithUser()
@@ -130,15 +139,15 @@ namespace MvcProjectTests
             else { throw new NotImplementedException("Not implemented setup for " + Enum.GetName(typeof(GuiToTest), TestSettings.GUI)); }
         }
  
-        public Dialog_UserActions Get_Dialog_UserActions()
+        public Dialog_UserActions Get_Dialog_UserActions(int viewID)
         {
             if (TestSettings.GUI == GuiToTest.AspMvcApplication) 
             {
-                return new Dialog_UserActions(new DialogueModel());
+                return new Dialog_UserActions(ViewStateManager.getViewFromViewState<DialogueModel>(viewID));
             }
             else if (TestSettings.GUI == GuiToTest.MockUI)
             {
-                return new Dialog_UserActions(new Mock_UI_DialogWithUser());
+                return new Dialog_UserActions(ViewStateManager.getViewFromViewState<Mock_UI_DialogWithUser>(viewID));
             }
             else
             {
