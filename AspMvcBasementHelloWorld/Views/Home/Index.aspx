@@ -14,7 +14,7 @@
    {%>
 <select name="<%= DialogueModel.languageDropDownName %>">
 <option <%= Model.GetSelectedAttributeForLanguage("") %>value=""></option>
-<% foreach (int lanID in ((I_UI_DialogWithUser)Model).subViews_avaliableLanguages)
+<% foreach (int lanID in ((I_UI_DialogWithUser)Model).subViews_availableLanguages)
    {
        BasementHelloWorldCommonParts.UI.I_IdDescriptionPaar lan = BasementHelloWorldCommonParts.HelloWorldStructures.ViewStateManager.getViewFromViewState<BasementHelloWorldCommonParts.HelloWorldStructures.IdDescriptionPaar>(lanID);
        %>

@@ -60,6 +60,7 @@ namespace MvcProjectTests
                 string url = ""; //relative to web site root
 
                 WorkerRequestSettings rqstSettings = new WorkerRequestSettings(url, WorkerRequestSettings.httpRequestMethods.GET);
+                rqstSettings.clientIpAddress = "192.168.30.130";
 
                 //Act
                 RequestResult result = browsingSession.ProcessRequest(rqstSettings);

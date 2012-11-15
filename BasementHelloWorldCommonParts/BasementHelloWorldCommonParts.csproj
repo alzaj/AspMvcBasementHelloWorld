@@ -45,6 +45,8 @@
     <Compile Include="HelloWorldStructures\ViewStateManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HelloWorldStructures\IdDescriptionPaar.cs" />
+    <Compile Include="Repositories\I_HelloWorldRepository.cs" />
+    <Compile Include="Repositories\Mock_HelloWorldRepository.cs" />
     <Compile Include="UA_Processors\Dialog_UserActions.cs" />
     <Compile Include="UI\I_IdDescriptionPaar.cs" />
     <Compile Include="UI\I_OpaView.cs" />

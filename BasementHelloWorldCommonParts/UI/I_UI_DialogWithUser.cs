@@ -8,7 +8,7 @@ namespace BasementHelloWorldCommonParts.UI
     public interface I_UI_DialogWithUser : I_OpaView
     {
         string strProp_selectedLanguage { get; set; }
-        List<int> subViews_avaliableLanguages { get; set; }
+        List<int> subViews_availableLanguages { get; set; }
 
         string strProp_actionExplanation_SelectLanguage { get; set; }
         bool boolProp_isActionPossible_SelectLanguage { get; set; }

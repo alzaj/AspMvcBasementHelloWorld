@@ -11,7 +11,7 @@ namespace BasementHelloWorldCommonParts.UI
     {
         public OpaView()
         {
-            _viewID = ViewStateManager.consumeLastFreeID();
+            //_viewID = ViewStateManager.consumeLastFreeID();
         }
 
         public System.Type viewType
@@ -19,7 +19,10 @@ namespace BasementHelloWorldCommonParts.UI
 
         private int _viewID = 0;
         public int viewID
-        { get { return _viewID; } }
+        {
+            get { return _viewID; }
+            set { _viewID = value; }
+        }
 
         private int _parentViewID = 0;
         public int parentViewID
@@ -105,7 +108,7 @@ namespace BasementHelloWorldCommonParts.UI
 
         public void assimilateWith(I_OpaView anotherView)
         {
-            if (!(anotherView.viewType == viewType )){
+            if (anotherView.viewType != viewType ){
                 throw new ArgumentException("This instance is of type " + viewType.ToString() + " and cannot be assimilated with type " + anotherView.viewType.ToString() );
             }
 
@@ -136,6 +139,11 @@ namespace BasementHelloWorldCommonParts.UI
 
             this._viewID = anotherView.viewID;
             this._parentViewID = anotherView.parentViewID;
+            afterAssimilating();
+        }
+
+        public virtual void afterAssimilating()
+        {
         }
     }
 }

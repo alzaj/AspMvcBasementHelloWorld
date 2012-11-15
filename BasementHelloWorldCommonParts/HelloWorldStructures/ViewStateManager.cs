@@ -17,32 +17,36 @@ namespace BasementHelloWorldCommonParts.HelloWorldStructures
         }
 
         private static int _nextFreeIndex = 1;
+        public static int currentNextFreeIndex()
+        {
+            return _nextFreeIndex;
+        }
         public static int consumeLastFreeID()
         {
             _nextFreeIndex += 1;
             return _nextFreeIndex - 1;
         }
 
+        private static int _returnCurrentFreeIdAndIncrementIt()
+        {
+            int ausgabe = _nextFreeIndex;
+            _nextFreeIndex += 1;
+            return ausgabe;
+        }
+
         public static T_viewType getViewFromViewState<T_viewType>(int viewID) where T_viewType : I_OpaView, new()
         {
             T_viewType ausgabe;
+            bool viewExists = _views.ContainsKey(viewID);
 
-            if (viewID > 0)
+            ausgabe = new T_viewType();
+            if (viewExists && (viewID > 0))
             {
-                //When creating OpaView the nextFreeIndex is consumed.
-                //This time we don't want to consume nextFreeIndex
-                //because the id of the archive View will be used
-
-                int backupNextFreeIndex = _nextFreeIndex;
-                _nextFreeIndex = 0;
-                ausgabe = new T_viewType();
-                _nextFreeIndex = backupNextFreeIndex;
-
                 ((I_OpaView)ausgabe).assimilateWith(_views[viewID]);
             }
             else
             {
-                ausgabe = new T_viewType();
+                ausgabe.viewID = consumeLastFreeID();
             }
 
             return ausgabe;
@@ -88,7 +92,10 @@ namespace BasementHelloWorldCommonParts.HelloWorldStructures
 
         private int _viewID = 0;
         public int viewID
-        { get { return _viewID; } }
+        { 
+            get { return _viewID; }
+            set { _viewID = value; }
+        }
 
         private int _parentViewID = 0;
         public int parentViewID
@@ -125,6 +132,8 @@ namespace BasementHelloWorldCommonParts.HelloWorldStructures
         {
             initFrom_I_OpaView(anotherView);
         }
+
+        public void afterAssimilating() { }
 
         #endregion //I_OpaView
 

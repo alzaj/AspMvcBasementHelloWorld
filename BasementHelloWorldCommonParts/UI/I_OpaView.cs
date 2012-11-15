@@ -7,7 +7,7 @@ namespace BasementHelloWorldCommonParts.UI
 {
     public interface I_OpaView
     {
-        int viewID { get; }
+        int viewID { get; set; }
         int parentViewID { get; }
         System.Type viewType { get; }
 
@@ -18,5 +18,6 @@ namespace BasementHelloWorldCommonParts.UI
         Dictionary<string, List<int>> subViewsLists { get; }
 
         void assimilateWith(I_OpaView anotherView);
+        void afterAssimilating();
     }
 }
