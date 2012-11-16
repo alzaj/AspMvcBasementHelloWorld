@@ -10,8 +10,6 @@ namespace BasementHelloWorldCommonParts.UA_Processors
 {
     public class Dialog_UserActions //<T_ViewType> where T_ViewType : OpaView, I_UI_DialogWithUser, new()
     {
-        public const int defaultViewID = 1;
-
         private void constructMe(I_UI_DialogWithUser view, I_HelloWorldRepository repo)
         {
             _UserView = view;
@@ -103,11 +101,16 @@ namespace BasementHelloWorldCommonParts.UA_Processors
             return ausgabe;
         }
 
-        #region initializations
+#region initializations
 
         private void initUserView()
         {
             UserView.boolProp_isActionPossible_SelectLanguage = true;
+            if (String.IsNullOrEmpty(UserView.strProp_actionExplanation_SelectLanguage))
+            {
+                UserView.strProp_actionExplanation_SelectLanguage = _repository.GetWordTranslation(NeededWords.actionExplanation_SelectLanguage,"en");
+            }
+
             initLanguages();
         }
 
@@ -136,9 +139,9 @@ namespace BasementHelloWorldCommonParts.UA_Processors
             }
         }
 
-        #endregion //initializations
+#endregion //initializations
 
-        #region UserActions help methods
+#region UserActions help methods
 
         private UserActionsQuery _userActionsQuery = new UserActionsQuery();
 
@@ -156,6 +159,10 @@ namespace BasementHelloWorldCommonParts.UA_Processors
             else if (action is Action_ReportUserName)
             {
                 this.ReportUserName((Action_ReportUserName)action);
+            }
+            else if (action is Action_AcceptChatAgain)
+            {
+                this.AnswerChatAgainQuestion((Action_AcceptChatAgain)action);
             }
             else
             {
@@ -180,9 +187,9 @@ namespace BasementHelloWorldCommonParts.UA_Processors
             ViewStateManager.saveViewToViewState(UserView);
         }
 
-        #endregion //UserActions help functions
+#endregion //UserActions help functions
 
-        #region UserActions
+#region UserActions
 
         public class Action_SetSelectedLanguage : OpaUserAction
         {
@@ -192,6 +199,11 @@ namespace BasementHelloWorldCommonParts.UA_Processors
         public class Action_ReportUserName : OpaUserAction
         {
             public string userName = "";
+        }
+
+        public class Action_AcceptChatAgain : OpaUserAction
+        {
+            public bool needChatAgain = false;
         }
 
         private void SetSelectedLanguage(Action_SetSelectedLanguage act)
@@ -261,9 +273,26 @@ namespace BasementHelloWorldCommonParts.UA_Processors
                 SetGuiForStep(1);
             }
         }
-        #endregion //UserActions
 
-        #region setting GUI for steps
+        private void AnswerChatAgainQuestion(Action_AcceptChatAgain act)
+        {
+            if (act.needChatAgain)
+            {
+                UserView.strProp_userName = "";
+                SetGuiForStep(2);
+            }
+            else
+            {
+                UserView.strProp_selectedLanguage = "";
+                UserView.strProp_userName = "";
+                SetGuiForStep(1);
+            }
+        }
+
+#endregion //UserActions
+
+#region setting GUI for steps
+
         private void SetGuiForStep(int stepNr)
         {
             SetGuiElementsVisiblity(stepNr);
@@ -279,18 +308,21 @@ namespace BasementHelloWorldCommonParts.UA_Processors
                     UserView.boolProp_greetingVisible = false;
                     UserView.boolProp_isActionPossible_TellUserName = false;
                     UserView.boolProp_helloUserMessageVisible = false;
+                    UserView.boolProp_isActionPossible_AnswerChatAgainQuestion = false;
                     break;
                 case 2: //language selected. it's possible to submit the name
                     UserView.boolProp_isActionPossible_SelectLanguage = true;
                     UserView.boolProp_greetingVisible = true;
                     UserView.boolProp_isActionPossible_TellUserName = true;
                     UserView.boolProp_helloUserMessageVisible = false;
+                    UserView.boolProp_isActionPossible_AnswerChatAgainQuestion = false;
                     break;
                 case 3: //language selected, name submitted. appears hello greeting and user can restar/abbort dialogue
                     UserView.boolProp_isActionPossible_SelectLanguage = true;
                     UserView.boolProp_greetingVisible = false;
                     UserView.boolProp_isActionPossible_TellUserName = false;
                     UserView.boolProp_helloUserMessageVisible = true;
+                    UserView.boolProp_isActionPossible_AnswerChatAgainQuestion = true;
                     break;
                 default:
                     throw new ArgumentException("Invalid selection");
@@ -300,19 +332,24 @@ namespace BasementHelloWorldCommonParts.UA_Processors
 
         private void SetGuiElementsText(int stateNr)
         {
+            string selLang = UserView.strProp_selectedLanguage;
             switch (stateNr)
             {
                 case 1: //application start. no language selected. all elements invisible (except language ddl with default english text
-                    UserView.strProp_actionExplanation_SelectLanguage = _repository.getactionExplanation_SelectLanguage("en");
+                    UserView.strProp_actionExplanation_SelectLanguage = _repository.GetWordTranslation(NeededWords.actionExplanation_SelectLanguage,"en");
                     break;
                 case 2: //language selected. it's possible to submit the name
-                    UserView.strProp_actionExplanation_SelectLanguage = _repository.getactionExplanation_SelectLanguage(UserView.strProp_selectedLanguage);
-                    UserView.strProp_greetingText = _repository.getInitialGreetingText(UserView.strProp_selectedLanguage);
-                    UserView.strProp_actionExplanation_TellUserName = _repository.getactionExplanation_TellUserName(UserView.strProp_selectedLanguage);
+                    UserView.strProp_actionExplanation_SelectLanguage = _repository.GetWordTranslation(NeededWords.actionExplanation_SelectLanguage,selLang);
+                    UserView.strProp_greetingText = _repository.GetWordTranslation(NeededWords.initialGreetingText,selLang);
+                    UserView.strProp_actionExplanation_TellUserName = _repository.GetWordTranslation(NeededWords.actionExplanation_TellUserName,selLang);
                     break;
                 case 3: //language selected, name submitted. appears hello greeting and user can restar/abbort dialogue
-                    UserView.strProp_actionExplanation_SelectLanguage = _repository.getactionExplanation_SelectLanguage(UserView.strProp_selectedLanguage);
-                    UserView.strProp_helloUserMessageText = _repository.getHelloUserMessage(UserView.strProp_selectedLanguage, UserView.strProp_userName);
+                    UserView.strProp_actionExplanation_SelectLanguage = _repository.GetWordTranslation(NeededWords.actionExplanation_SelectLanguage,selLang);
+                    UserView.strProp_helloUserMessageText = placeholderReplaceUserName(_repository.GetWordTranslation(NeededWords.helloUserMessage,selLang), UserView.strProp_userName);
+
+                    UserView.strProp_questionForChatingAgain = _repository.GetWordTranslation(NeededWords.questionForChatingAgain, selLang);
+                    UserView.strProp_actionExplanation_DoChatAgain = _repository.GetWordTranslation(NeededWords.yes, selLang);
+                    UserView.strProp_actionExplanation_DontChatAgain = _repository.GetWordTranslation(NeededWords.no, selLang);
                     break;
                 default:
                     throw new ArgumentException("Invalid selection");
@@ -320,7 +357,13 @@ namespace BasementHelloWorldCommonParts.UA_Processors
             }
         }
 
-        #endregion //setting GUI for steps
+#endregion //setting GUI for steps
 
+#region placeholder replacements
+        string placeholderReplaceUserName(string stringWithPlaceholder, string userName)
+        {
+            return stringWithPlaceholder.Replace(Const_String.userNamePlaceholder, userName);
+        }
+#endregion //placeholder replacements
     }
 }

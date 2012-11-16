@@ -46,10 +46,25 @@ namespace BasementHelloWorldCommonParts.UI
 
         public bool boolProp_isActionPossible_TellUserName
         { get; set; }
+
+        public bool boolProp_isActionPossible_AnswerChatAgainQuestion 
+        { get; set; }
+
+        public string strProp_actionExplanation_DontChatAgain 
+        { get; set; }
+
+        public string strProp_actionExplanation_DoChatAgain 
+        { get; set; }
+
+        public string strProp_questionForChatingAgain
+        { get; set; }
+
         #endregion //I_UI_DialogWithUser
 
-        #region overriden functions
 
+        
+        
+        #region overriden functions
         #endregion //overriden functions
     }
 }

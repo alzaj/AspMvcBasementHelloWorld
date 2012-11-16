@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HelloWorldStructures\Const_String.cs" />
+    <Compile Include="HelloWorldStructures\LanguageWord.cs" />
     <Compile Include="HelloWorldStructures\OpaUserAction.cs" />
     <Compile Include="HelloWorldStructures\UserActionsQuery.cs" />
     <Compile Include="HelloWorldStructures\ViewStateManager.cs" />
@@ -47,6 +49,7 @@
     <Compile Include="HelloWorldStructures\IdDescriptionPaar.cs" />
     <Compile Include="Repositories\I_HelloWorldRepository.cs" />
     <Compile Include="Repositories\Mock_HelloWorldRepository.cs" />
+    <Compile Include="Repositories\RAM_HelloWorldRepository.cs" />
     <Compile Include="UA_Processors\Dialog_UserActions.cs" />
     <Compile Include="UI\I_IdDescriptionPaar.cs" />
     <Compile Include="UI\I_OpaView.cs" />

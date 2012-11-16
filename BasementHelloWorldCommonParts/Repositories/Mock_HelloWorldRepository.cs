@@ -2,15 +2,54 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BasementHelloWorldCommonParts.HelloWorldStructures;
 
 namespace BasementHelloWorldCommonParts.Repositories
 {
     public class Mock_HelloWorldRepository : I_HelloWorldRepository
     {
-        public string getactionExplanation_SelectLanguage(string langID) { return langID + "_useSelectedLanguage"; }
-        public string getactionExplanation_TellUserName(string langID) { return langID + "_tellUserName"; }
+        public string GetWordTranslation(NeededWords word, string langID)
+        {
+            string ausgabe = "";
 
-        public string getInitialGreetingText(string langID) { return langID + "_greeting";; }
-        public string getHelloUserMessage(string langID, string userName) { return "helloUserMessage_" + langID + "_" + userName; }
+            switch (word)
+            {
+                case NeededWords.actionExplanation_SelectLanguage:
+                    ausgabe = langID + "_useSelectedLanguage";
+                    break;
+                case NeededWords.actionExplanation_TellUserName:
+                    ausgabe = langID + "_tellUserName";
+                    break;
+                case NeededWords.initialGreetingText:
+                    ausgabe = langID + "_greeting";
+                    break;
+                case NeededWords.helloUserMessage:
+                    ausgabe = "helloUserMessage_" + langID + "_" + Const_String.userNamePlaceholder;
+                    break;
+                case NeededWords.questionForChatingAgain:
+                    ausgabe = "questionForChatingAgain_" + langID;
+                    break;
+                case NeededWords.yes:
+                    ausgabe = "yes_" + langID;
+                    break;
+                case NeededWords.no:
+                    ausgabe = "no_" + langID;
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+
+            return ausgabe;
+        }
+
+        public Dictionary<string, string> GetAllLanguages()
+        {
+            return new Dictionary<string, string>();
+        }
+
+        public Dictionary<LanguageWord, string> GetAllTranslations()
+        {
+            return new Dictionary<LanguageWord, string>();
+        }
     }
 }

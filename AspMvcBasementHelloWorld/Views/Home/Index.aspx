@@ -21,18 +21,22 @@
 <option <%= Model.GetSelectedAttributeForLanguage(lan.strProp_shortID) %>value="<%= lan.strProp_shortID %>"><%= lan.strProp_description%></option>
 <% } //end foreach avaliableLanguages %>
 </select>
-<% if (((I_UI_DialogWithUser)Model).boolProp_isActionPossible_SelectLanguage)
+<%
+  if (((I_UI_DialogWithUser)Model).boolProp_isActionPossible_SelectLanguage)
    { %>
 <input name="<%= DialogueModel.SetLanguageButtonName %>" type="submit" value="<%= ((I_UI_DialogWithUser)Model).strProp_actionExplanation_SelectLanguage %>" />
 <% } //end if isActionPossible_SelectLanguage  %>
-<% if (((I_UI_DialogWithUser)Model).boolProp_greetingVisible)
+<% 
+    
+    
+    if (((I_UI_DialogWithUser)Model).boolProp_greetingVisible)
    { %>
 <br /><br /><%= ((I_UI_DialogWithUser)Model).strProp_greetingText%>
 <%} //end if greetingVisible %>
 <% 
 
     
-       if (((I_UI_DialogWithUser)Model).boolProp_isActionPossible_TellUserName)
+if (((I_UI_DialogWithUser)Model).boolProp_isActionPossible_TellUserName)
    { %>
 <br /><br />
 <input name="<%= DialogueModel.reportNameTextBoxName %>" type="text" />
@@ -41,11 +45,21 @@
 <%
 
         
-       if (((I_UI_DialogWithUser)Model).boolProp_helloUserMessageVisible)
+if (((I_UI_DialogWithUser)Model).boolProp_helloUserMessageVisible)
    { %>
 <br /><%= ((I_UI_DialogWithUser)Model).strProp_helloUserMessageText%>
 <%} //end if helloUserMessageVisible %>
 
+<%
+
+if (((I_UI_DialogWithUser)Model).boolProp_isActionPossible_AnswerChatAgainQuestion)
+   { %>
+<br /><%= ((I_UI_DialogWithUser)Model).strProp_questionForChatingAgain%>
+<br />
+<input name="<%= DialogueModel.chatAgainYESButtonName %>" type="submit" value="<%= ((I_UI_DialogWithUser)Model).strProp_actionExplanation_DoChatAgain %>" />
+<input name="<%= DialogueModel.chatAgainNOButtonName %>" type="submit" value="<%= ((I_UI_DialogWithUser)Model).strProp_actionExplanation_DontChatAgain %>" />
+
+<%} //end if isActionPossible_AnswerChatAgainQuestion %>
 
 <% } //End using Html.BeginForm%>
 </div>

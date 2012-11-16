@@ -38,6 +38,16 @@ namespace AspMvcBasementHelloWorld.ViewModels
         {
             get { return "reportNameBtn"; }
         }
+
+        public static string chatAgainYESButtonName
+        {
+            get { return "chatAgainYESBtn"; }
+        }
+
+        public static string chatAgainNOButtonName
+        {
+            get { return "chatAgainNOBtn"; }
+        }
         
 #endregion //Html controls names
 

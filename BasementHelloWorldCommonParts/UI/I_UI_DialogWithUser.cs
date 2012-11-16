@@ -24,5 +24,10 @@ namespace BasementHelloWorldCommonParts.UI
         string strProp_helloUserMessageText { get; set; }
         bool boolProp_helloUserMessageVisible { get; set; }
 
+        bool boolProp_isActionPossible_AnswerChatAgainQuestion { get; set; }
+        string strProp_questionForChatingAgain { get; set; }
+        string strProp_actionExplanation_DontChatAgain { get; set; }
+        string strProp_actionExplanation_DoChatAgain { get; set; }
+
     }
 }

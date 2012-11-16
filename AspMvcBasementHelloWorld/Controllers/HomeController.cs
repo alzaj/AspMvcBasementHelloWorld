@@ -55,8 +55,6 @@ namespace AspMvcBasementHelloWorld.Controllers
 
         }
 
-
-
         //[HttpPost]
         //[ActionName("Index")]
         //public ActionResult Index_Post()
@@ -73,6 +71,8 @@ namespace AspMvcBasementHelloWorld.Controllers
             bool needLanguageToSelect = false;
             string submittedUserName = "";
             bool isUserNameSubmitted = false;
+            bool isAnsewerChatAgainSubmitted = false;
+            bool needChatAgain = false;
 
             foreach (string k in Request.Form.Keys)
             {
@@ -82,10 +82,13 @@ namespace AspMvcBasementHelloWorld.Controllers
                 else if (k == DialogueModel.languageDropDownName) { languageToSelect = val; }
                 else if (k == DialogueModel.reportNameTextBoxName) { submittedUserName = val; }
                 else if (k == DialogueModel.reportNameButtonName) { isUserNameSubmitted = true; }
+                else if (k == DialogueModel.chatAgainNOButtonName) { isAnsewerChatAgainSubmitted = true; }
+                else if (k == DialogueModel.chatAgainYESButtonName) { isAnsewerChatAgainSubmitted = true; needChatAgain = true; }
             }
 
             if (needLanguageToSelect) { ausgabe.AddUserAction(_dialogViewIndex, new Dialog_UserActions.Action_SetSelectedLanguage { newLang = languageToSelect }); }
             if (isUserNameSubmitted) { ausgabe.AddUserAction(_dialogViewIndex, new Dialog_UserActions.Action_ReportUserName { userName = submittedUserName }); }
+            if (isAnsewerChatAgainSubmitted) { ausgabe.AddUserAction(_dialogViewIndex, new Dialog_UserActions.Action_AcceptChatAgain { needChatAgain = needChatAgain }); }
 
             return ausgabe;
         }
