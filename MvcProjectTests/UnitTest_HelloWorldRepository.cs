@@ -25,7 +25,6 @@ namespace MvcProjectTests
             I_HelloWorldRepository repLangsAndTranslations = TestSettings.Get_HelloWorldRepository(true, true);
 
             //Act
-            int i = repEmpty.GetAllLanguages().Count;
 
             //Assert
             Assert.Equal(0,repEmpty.GetAllLanguages().Count);

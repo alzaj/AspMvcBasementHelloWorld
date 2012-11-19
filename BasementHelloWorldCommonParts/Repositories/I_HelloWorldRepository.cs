@@ -28,5 +28,8 @@ namespace BasementHelloWorldCommonParts.Repositories
         Dictionary<LanguageWord, string> GetAllTranslations();
 
         string GetWordTranslation(NeededWords word, string langID);
+
+        void AddNewLanguage(string langID, string nativeText);
+        void AddNewTranslation(NeededWords word, string langID, string translationText);
     }
 }

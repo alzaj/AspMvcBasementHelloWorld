@@ -48,6 +48,23 @@ namespace MvcProjectTests
                     throw new NotImplementedException();
             }
 
+            if (needDefaultLanguagesForTesting)
+            {
+                foreach (KeyValuePair<string, string> lang in SampleData.defaultLanguages)
+                {
+                    ausgabe.AddNewLanguage(lang.Key, lang.Value);
+                }
+
+            }
+
+            if (needDefaultTranslationsForTesting)
+            {
+                foreach (KeyValuePair<LanguageWord, string> transl in SampleData.defaultTranslations())
+                {
+                    ausgabe.AddNewTranslation(transl.Key.word, transl.Key.languageID, transl.Value);
+                }
+            }
+
             return ausgabe;
         }
     }

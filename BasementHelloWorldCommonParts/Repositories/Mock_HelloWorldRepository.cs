@@ -44,12 +44,22 @@ namespace BasementHelloWorldCommonParts.Repositories
 
         public Dictionary<string, string> GetAllLanguages()
         {
-            return new Dictionary<string, string>();
+            return SampleData.defaultLanguages;
         }
 
         public Dictionary<LanguageWord, string> GetAllTranslations()
         {
             return new Dictionary<LanguageWord, string>();
+        }
+
+        public void AddNewLanguage(string langID, string nativeText)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddNewTranslation(NeededWords word, string langID, string translationText)
+        {
+            throw new NotImplementedException();
         }
     }
 }

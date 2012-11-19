@@ -14,6 +14,8 @@ namespace BasementHelloWorldCommonParts.UA_Processors
         {
             _UserView = view;
             _repository = repo;
+           
+            
             initUserView();
         }
 
@@ -24,7 +26,7 @@ namespace BasementHelloWorldCommonParts.UA_Processors
 
         public Dialog_UserActions(I_UI_DialogWithUser view)
         {
-            constructMe(view, new Mock_HelloWorldRepository());
+            constructMe(view, new RAM_HelloWorldRepository());
         }
 
         //public Dialo_UserActions
@@ -55,6 +57,7 @@ namespace BasementHelloWorldCommonParts.UA_Processors
 
         private I_HelloWorldRepository _repository;
 
+        private string _robotName = "HelloWorld";
 
         public bool isValidLanguage(string language)
         {
@@ -70,27 +73,8 @@ namespace BasementHelloWorldCommonParts.UA_Processors
             return ausgabe;
         }
 
-
-
-        private Dictionary<string, string> _defaultAvaliableLanguages
-        {
-            get
-            {
-                Dictionary<string, string> ausgabe = new Dictionary<string, string>();
-
-                ausgabe.Add("de", "Deutsch");
-                ausgabe.Add("en", "English");
-                ausgabe.Add("fr", "Français");
-                ausgabe.Add("ru", "Русский");
-
-                return ausgabe;
-            }
-        }
-
         public List<string> getAvailableLanguages()
         {
-            //return new string[] { "de", "en", "fr", "ru" };
-
             List<string> ausgabe = new List<string>();
             foreach (int spracheID in UserView.subViews_availableLanguages)
             {
@@ -116,7 +100,7 @@ namespace BasementHelloWorldCommonParts.UA_Processors
 
         private void initLanguages()
         {
-            foreach (KeyValuePair<string, string> lang in _defaultAvaliableLanguages)
+            foreach (KeyValuePair<string, string> lang in _repository.GetAllLanguages())
             {
                 bool isLangAdded = false;
                 foreach (int aID in UserView.subViews_availableLanguages)
@@ -215,16 +199,16 @@ namespace BasementHelloWorldCommonParts.UA_Processors
             else
             {
                 //debug: set last selected attachement
-                foreach (int spracheID in UserView.subViews_availableLanguages)
-                {
-                    IdDescriptionPaar tmpSprache = ViewStateManager.getViewFromViewState<IdDescriptionPaar>(spracheID);
-                    if (tmpSprache.strProp_shortID == act.newLang)
-                    {
-                        string newDescr = tmpSprache.strProp_description.Split(new char[] { '(' })[0];
-                        tmpSprache.strProp_description = newDescr + "(last selected at " + DateTime.Now.ToString("HH:mm)");
-                        ViewStateManager.saveViewToViewState(tmpSprache);
-                    }
-                }
+                //foreach (int spracheID in UserView.subViews_availableLanguages)
+                //{
+                //    IdDescriptionPaar tmpSprache = ViewStateManager.getViewFromViewState<IdDescriptionPaar>(spracheID);
+                //    if (tmpSprache.strProp_shortID == act.newLang)
+                //    {
+                //        string newDescr = tmpSprache.strProp_description.Split(new char[] { '(' })[0];
+                //        tmpSprache.strProp_description = newDescr + "(last selected at " + DateTime.Now.ToString("HH:mm)");
+                //        ViewStateManager.saveViewToViewState(tmpSprache);
+                //    }
+                //}
             }
 
             bool isLanguageChanged = !(UserView.strProp_selectedLanguage == act.newLang);
@@ -340,7 +324,7 @@ namespace BasementHelloWorldCommonParts.UA_Processors
                     break;
                 case 2: //language selected. it's possible to submit the name
                     UserView.strProp_actionExplanation_SelectLanguage = _repository.GetWordTranslation(NeededWords.actionExplanation_SelectLanguage,selLang);
-                    UserView.strProp_greetingText = _repository.GetWordTranslation(NeededWords.initialGreetingText,selLang);
+                    UserView.strProp_greetingText = placeholderReplaceRobotName(_repository.GetWordTranslation(NeededWords.initialGreetingText, selLang), _robotName);
                     UserView.strProp_actionExplanation_TellUserName = _repository.GetWordTranslation(NeededWords.actionExplanation_TellUserName,selLang);
                     break;
                 case 3: //language selected, name submitted. appears hello greeting and user can restar/abbort dialogue
@@ -363,6 +347,11 @@ namespace BasementHelloWorldCommonParts.UA_Processors
         string placeholderReplaceUserName(string stringWithPlaceholder, string userName)
         {
             return stringWithPlaceholder.Replace(Const_String.userNamePlaceholder, userName);
+        }
+
+        string placeholderReplaceRobotName(string stringWithPlaceholder, string robotName)
+        {
+            return stringWithPlaceholder.Replace(Const_String.robotNamePlaceholder, robotName);
         }
 #endregion //placeholder replacements
     }

@@ -47,15 +47,14 @@ if (((I_UI_DialogWithUser)Model).boolProp_isActionPossible_TellUserName)
         
 if (((I_UI_DialogWithUser)Model).boolProp_helloUserMessageVisible)
    { %>
-<br /><%= ((I_UI_DialogWithUser)Model).strProp_helloUserMessageText%>
+<br /><br /><b><%= ((I_UI_DialogWithUser)Model).strProp_helloUserMessageText%></b>
 <%} //end if helloUserMessageVisible %>
 
 <%
 
 if (((I_UI_DialogWithUser)Model).boolProp_isActionPossible_AnswerChatAgainQuestion)
    { %>
-<br /><%= ((I_UI_DialogWithUser)Model).strProp_questionForChatingAgain%>
-<br />
+<br /><br /><%= ((I_UI_DialogWithUser)Model).strProp_questionForChatingAgain%>
 <input name="<%= DialogueModel.chatAgainYESButtonName %>" type="submit" value="<%= ((I_UI_DialogWithUser)Model).strProp_actionExplanation_DoChatAgain %>" />
 <input name="<%= DialogueModel.chatAgainNOButtonName %>" type="submit" value="<%= ((I_UI_DialogWithUser)Model).strProp_actionExplanation_DontChatAgain %>" />
 

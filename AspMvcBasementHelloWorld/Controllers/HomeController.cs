@@ -7,6 +7,7 @@ using AspMvcBasementHelloWorld.ViewModels;
 using BasementHelloWorldCommonParts.UA_Processors;
 using BasementHelloWorldCommonParts.UI;
 using BasementHelloWorldCommonParts.HelloWorldStructures;
+using BasementHelloWorldCommonParts.Repositories;
 
 namespace AspMvcBasementHelloWorld.Controllers
 {
@@ -41,8 +42,10 @@ namespace AspMvcBasementHelloWorld.Controllers
             {
                 userView = new DialogueModel();
             }
-            
-            Dialog_UserActions viewProcessor = new Dialog_UserActions(userView);
+
+            RAM_HelloWorldRepository rep = new RAM_HelloWorldRepository();
+            rep.populateWithTestData();
+            Dialog_UserActions viewProcessor = new Dialog_UserActions(userView, rep);
             _dialogViewIndex = viewProcessor.UserView.viewID;
 
             //viewProcessor.AddUserAction(new Dialog_UserActions.Action_SetSelectedLanguage { newLang = "ru" });

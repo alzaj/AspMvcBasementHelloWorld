@@ -5,8 +5,9 @@ using System.Text;
 
 namespace BasementHelloWorldCommonParts.HelloWorldStructures
 {
-    class Const_String
+    public class Const_String
     {
         public const string userNamePlaceholder = "<UserName>";
+        public const string robotNamePlaceholder = "<RobotName>";
     }
 }
