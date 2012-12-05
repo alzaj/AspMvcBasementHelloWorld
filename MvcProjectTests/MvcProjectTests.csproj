@@ -54,6 +54,7 @@
     <Compile Include="Index_NewSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTest_HelloWorldRepository.cs" />
+    <Compile Include="UnitTest_MultipleDialogs.cs" />
     <Compile Include="UnitTest_ViewStateManager.cs" />
   </ItemGroup>
   <ItemGroup>

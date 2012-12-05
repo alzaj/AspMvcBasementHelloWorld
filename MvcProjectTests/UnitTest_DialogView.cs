@@ -32,12 +32,12 @@ namespace MvcProjectTests
         { 
             //Arrange
             string newLang = "de";
-            Dialog_UserActions processor = Get_Dialog_UserActions(0);
+            Dialog_Processor processor = Get_Dialog_Processor(0);
             Assert.True(string.IsNullOrEmpty(processor.UserView.strProp_selectedLanguage));
             Assert.True(processor.UserView.boolProp_isActionPossible_SelectLanguage);
             
             //Act
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_SetSelectedLanguage { newLang = newLang });
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_SetSelectedLanguage { newLang = newLang });
 
 
             //Assert
@@ -52,12 +52,12 @@ namespace MvcProjectTests
             //Arrange
             foreach (string s in new string[] {"xx", ""} ){
                 string newLang = s;
-                Dialog_UserActions processor = Get_Dialog_UserActions(0);
+                Dialog_Processor processor = Get_Dialog_Processor(0);
                 Assert.True(string.IsNullOrEmpty( processor.UserView.strProp_selectedLanguage));
                 Assert.Equal("en_useSelectedLanguage", processor.UserView.strProp_actionExplanation_SelectLanguage);
 
                 //Act
-                processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_SetSelectedLanguage { newLang = s });
+                processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_SetSelectedLanguage { newLang = s });
 
                 //Assert
                 Assert.True(string.IsNullOrEmpty(processor.UserView.strProp_selectedLanguage));
@@ -76,12 +76,12 @@ namespace MvcProjectTests
         {
             //Arrange
             string newLang = "de";
-            Dialog_UserActions processor = Get_Dialog_UserActions(0);
+            Dialog_Processor processor = Get_Dialog_Processor(0);
             Assert.True(string.IsNullOrEmpty(processor.UserView.strProp_selectedLanguage));
             Assert.True(string.IsNullOrEmpty(processor.UserView.strProp_userName));
 
             //Act
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_SetSelectedLanguage { newLang = newLang, hostViewID = processor.UserView.viewID });
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_SetSelectedLanguage { newLang = newLang, hostViewID = processor.UserView.viewID });
 
             //Assert
             Assert.Equal(newLang, processor.UserView.strProp_selectedLanguage);
@@ -96,13 +96,13 @@ namespace MvcProjectTests
         public void SelectValidLanguage_AfterAnswerChatAgainQuestion_YES()
         {
             //Arrange
-            Dialog_UserActions processor = Get_Dialog_UserActions(0);
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_SetSelectedLanguage { newLang = "de" });
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_ReportUserName { userName = "Fransois" });
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_AcceptChatAgain { needChatAgain = true });
+            Dialog_Processor processor = Get_Dialog_Processor(0);
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_SetSelectedLanguage { newLang = "de" });
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_ReportUserName { userName = "Fransois" });
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_AcceptChatAgain { needChatAgain = true });
 
             //Act
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_SetSelectedLanguage { newLang = "fr" });
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_SetSelectedLanguage { newLang = "fr" });
 
             //Assert
             Assert.Equal("fr", processor.UserView.strProp_selectedLanguage);
@@ -118,15 +118,15 @@ namespace MvcProjectTests
         {
             //Arrange
             string newUserName = "Fransois";
-            Dialog_UserActions processor = Get_Dialog_UserActions(0);
+            Dialog_Processor processor = Get_Dialog_Processor(0);
             Assert.True(string.IsNullOrEmpty(processor.UserView.strProp_selectedLanguage));
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_SetSelectedLanguage { newLang = "fr" });
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_SetSelectedLanguage { newLang = "fr" });
             ViewStateManager.saveViewToViewState(processor.UserView);
             int viewID = processor.UserView.viewID;
 
             //Act
-            processor = Get_Dialog_UserActions(viewID);
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_ReportUserName { userName = newUserName });
+            processor = Get_Dialog_Processor(viewID);
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_ReportUserName { userName = newUserName });
 
             //Assert
             Assert.Equal(newUserName, processor.UserView.strProp_userName);
@@ -145,16 +145,16 @@ namespace MvcProjectTests
         {
             //Arrange
             string newLang = "de";
-            Dialog_UserActions processor = Get_Dialog_UserActions(0);
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_SetSelectedLanguage { newLang = "fr" });
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_ReportUserName { userName = "Fransois" });
+            Dialog_Processor processor = Get_Dialog_Processor(0);
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_SetSelectedLanguage { newLang = "fr" });
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_ReportUserName { userName = "Fransois" });
             Assert.Equal("helloUserMessage_fr_Fransois", processor.UserView.strProp_helloUserMessageText);
             ViewStateManager.saveViewToViewState(processor.UserView);
             int viewID = processor.UserView.viewID;
 
             //Act
-            processor = Get_Dialog_UserActions(viewID);
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_SetSelectedLanguage { newLang = newLang });
+            processor = Get_Dialog_Processor(viewID);
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_SetSelectedLanguage { newLang = newLang });
 
             //Assert
             Assert.Equal(newLang, processor.UserView.strProp_selectedLanguage);
@@ -172,15 +172,15 @@ namespace MvcProjectTests
         {
             //Arrange
             string newLang = "";
-            Dialog_UserActions processor = Get_Dialog_UserActions(0);
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_SetSelectedLanguage { newLang = "fr" });
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_ReportUserName { userName = "Fransois" });
+            Dialog_Processor processor = Get_Dialog_Processor(0);
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_SetSelectedLanguage { newLang = "fr" });
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_ReportUserName { userName = "Fransois" });
             ViewStateManager.saveViewToViewState(processor.UserView);
             int viewID = processor.UserView.viewID;
 
             //Act
-            processor = Get_Dialog_UserActions(viewID);
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_SetSelectedLanguage { newLang = newLang });
+            processor = Get_Dialog_Processor(viewID);
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_SetSelectedLanguage { newLang = newLang });
 
             //Assert
             Assert.Equal("", processor.UserView.strProp_selectedLanguage);
@@ -195,20 +195,20 @@ namespace MvcProjectTests
         public void AnswerChatAgainQuestion_YES()
         {
             //Arrange
-            Dialog_UserActions processor = Get_Dialog_UserActions(0);
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_SetSelectedLanguage { newLang = "de" });
+            Dialog_Processor processor = Get_Dialog_Processor(0);
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_SetSelectedLanguage { newLang = "de" });
             ViewStateManager.saveViewToViewState(processor.UserView);
             int viewID = processor.UserView.viewID;
 
-            processor = Get_Dialog_UserActions(viewID);
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_ReportUserName { userName = "Fransois" });
+            processor = Get_Dialog_Processor(viewID);
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_ReportUserName { userName = "Fransois" });
             ViewStateManager.saveViewToViewState(processor.UserView);
             viewID = processor.UserView.viewID;
 
-            processor = Get_Dialog_UserActions(viewID);
+            processor = Get_Dialog_Processor(viewID);
 
             //Act
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_AcceptChatAgain { needChatAgain = true });
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_AcceptChatAgain { needChatAgain = true });
 
             //Assert
             Assert.Equal("de", processor.UserView.strProp_selectedLanguage);
@@ -223,20 +223,20 @@ namespace MvcProjectTests
         public void AnswerChatAgainQuestion_NO()
         {
             //Arrange
-            Dialog_UserActions processor = Get_Dialog_UserActions(0);
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_SetSelectedLanguage { newLang = "de" });
+            Dialog_Processor processor = Get_Dialog_Processor(0);
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_SetSelectedLanguage { newLang = "de" });
             ViewStateManager.saveViewToViewState(processor.UserView);
             int viewID = processor.UserView.viewID;
 
-            processor = Get_Dialog_UserActions(viewID);
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_ReportUserName { userName = "Fransois" });
+            processor = Get_Dialog_Processor(viewID);
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_ReportUserName { userName = "Fransois" });
             ViewStateManager.saveViewToViewState(processor.UserView);
             viewID = processor.UserView.viewID;
 
-            processor = Get_Dialog_UserActions(viewID);
+            processor = Get_Dialog_Processor(viewID);
 
             //Act
-            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_UserActions.Action_AcceptChatAgain { needChatAgain = false });
+            processor.InvokeUserAction(new BasementHelloWorldCommonParts.UA_Processors.Dialog_Processor.Action_AcceptChatAgain { needChatAgain = false });
 
             //Assert
             Assert.Equal("", processor.UserView.strProp_selectedLanguage);
@@ -249,9 +249,9 @@ namespace MvcProjectTests
 #endregion //Tests
 
 #region TestsSetup
-        public Dialog_UserActions Get_Dialog_UserActions(int viewID)
+        public Dialog_Processor Get_Dialog_Processor(int viewID)
         {
-           return new Dialog_UserActions(TestSettings.Get_UI_DialogWithUser(viewID), new Mock_HelloWorldRepository());
+           return new Dialog_Processor(TestSettings.Get_UI_DialogWithUser(viewID), new Mock_HelloWorldRepository());
         }
 #endregion TestsSetup
     }

@@ -51,11 +51,14 @@
     <Compile Include="Repositories\Mock_HelloWorldRepository.cs" />
     <Compile Include="Repositories\RAM_HelloWorldRepository.cs" />
     <Compile Include="Repositories\SampleData.cs" />
-    <Compile Include="UA_Processors\Dialog_UserActions.cs" />
+    <Compile Include="UA_Processors\Dialog_Processor.cs" />
+    <Compile Include="UA_Processors\MultipleDialogs_Processor.cs" />
     <Compile Include="UI\I_IdDescriptionPaar.cs" />
     <Compile Include="UI\I_OpaView.cs" />
     <Compile Include="UI\I_UI_DialogWithUser.cs" />
+    <Compile Include="UI\I_UI_MultipleDialogs.cs" />
     <Compile Include="UI\Mock_UI_DialogWithUser.cs" />
+    <Compile Include="UI\Mock_UI_MultipleDialogs.cs" />
     <Compile Include="UI\OpaView.cs" />
   </ItemGroup>
   <ItemGroup />

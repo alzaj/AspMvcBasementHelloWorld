@@ -8,7 +8,7 @@ using BasementHelloWorldCommonParts.Repositories;
 
 namespace BasementHelloWorldCommonParts.UA_Processors
 {
-    public class Dialog_UserActions //<T_ViewType> where T_ViewType : OpaView, I_UI_DialogWithUser, new()
+    public class Dialog_Processor //<T_ViewType> where T_ViewType : OpaView, I_UI_DialogWithUser, new()
     {
         private void constructMe(I_UI_DialogWithUser view, I_HelloWorldRepository repo)
         {
@@ -19,33 +19,14 @@ namespace BasementHelloWorldCommonParts.UA_Processors
             initUserView();
         }
 
-        public Dialog_UserActions(I_UI_DialogWithUser view, I_HelloWorldRepository repo)
+        public Dialog_Processor(I_UI_DialogWithUser view, I_HelloWorldRepository repo)
         {
             constructMe(view, repo);
         }
 
-        public Dialog_UserActions(I_UI_DialogWithUser view)
+        public Dialog_Processor(I_UI_DialogWithUser view)
         {
             constructMe(view, new RAM_HelloWorldRepository());
-        }
-
-        //public Dialo_UserActions
-
-        private int _userViewID
-        {
-            get
-            {
-                if (_UserView == null) { return 0; }
-                else { return _UserView.viewID; }
-            }
-            set
-            {
-                if (value == 0) { throw new ArgumentException("ViewID cannot be Null"); }
-                else
-                {
-                    _UserView = ViewStateManager.getViewFromViewState<Mock_UI_DialogWithUser>(value);
-                }
-            }
         }
 
         private I_UI_DialogWithUser _UserView;
@@ -174,6 +155,7 @@ namespace BasementHelloWorldCommonParts.UA_Processors
 #endregion //UserActions help functions
 
 #region UserActions
+
 
         public class Action_SetSelectedLanguage : OpaUserAction
         {

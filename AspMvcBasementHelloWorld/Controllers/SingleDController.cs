@@ -11,32 +11,36 @@ using BasementHelloWorldCommonParts.Repositories;
 
 namespace AspMvcBasementHelloWorld.Controllers
 {
-    public class HomeController : Controller
+    public class SingleDController : Controller
     {
+
         private int _dialogViewIndex
         {
             get
-            { 
+            {
                 int ausgabe = 0;
                 try
                 {
-                    ausgabe = (int)System.Web.HttpContext.Current.Session["_dialogViewIndex"];
+                    ausgabe = (int)System.Web.HttpContext.Current.Session["_multiDialogViewIndex"];
                 }
-                catch{}
+                catch { }
                 return ausgabe;
             }
-            set 
+            set
             {
-                System.Web.HttpContext.Current.Session["_dialogViewIndex"] = value;
+                System.Web.HttpContext.Current.Session["_multiDialogViewIndex"] = value;
             }
         }
 
-        //[HttpGet]
+        //
+        // GET: /Multi/
+
         public ActionResult Index()
         {
             DialogueModel userView;
-            try { 
-                userView = ViewStateManager.getViewFromViewState<DialogueModel>(_dialogViewIndex); 
+            try
+            {
+                userView = ViewStateManager.getViewFromViewState<DialogueModel>(_dialogViewIndex);
             }
             catch (KeyNotFoundException)
             {
@@ -54,16 +58,9 @@ namespace AspMvcBasementHelloWorld.Controllers
             viewProcessor.InvokeUserActions(ExtractRequestActions_Index());
             //viewProcessor.InvokeUserAction(new Dialog_UserActions.Action_SetSelectedLanguage {newLang = "de"});
 
-            return View(viewProcessor.UserView);
 
+            return View("Index", viewProcessor.UserView);
         }
-
-        //[HttpPost]
-        //[ActionName("Index")]
-        //public ActionResult Index_Post()
-        //{
-        //    return View();
-        //}
 
         #region user actions
         private UserActionsQuery ExtractRequestActions_Index()

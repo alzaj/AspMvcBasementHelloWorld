@@ -125,6 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SingleDController.cs" />
     <Compile Include="C_StringConstants.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -137,7 +138,7 @@
     <Content Include="lib\EntityFramework\EntityFramework.dll" />
     <Content Include="lib\SystemWebProviders\System.Web.Providers.dll" />
     <Content Include="lib\MicrosoftWebOptimisations\System.Web.Optimization.dll" />
-    <Content Include="Views\Home\Index.aspx" />
+    <Content Include="Views\Shared\Index.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -151,6 +152,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
