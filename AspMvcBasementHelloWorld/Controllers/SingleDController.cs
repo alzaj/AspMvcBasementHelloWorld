@@ -21,30 +21,29 @@ namespace AspMvcBasementHelloWorld.Controllers
                 int ausgabe = 0;
                 try
                 {
-                    ausgabe = (int)System.Web.HttpContext.Current.Session["_multiDialogViewIndex"];
+                    ausgabe = (int)System.Web.HttpContext.Current.Session["_dialogViewIndex"];
                 }
                 catch { }
                 return ausgabe;
             }
             set
             {
-                System.Web.HttpContext.Current.Session["_multiDialogViewIndex"] = value;
+                System.Web.HttpContext.Current.Session["_dialogViewIndex"] = value;
             }
         }
 
         //
-        // GET: /Multi/
-
+        // GET: /SingleD/
         public ActionResult Index()
         {
-            DialogueModel userView;
+            SingleDialogueModelHelper userView;
             try
             {
-                userView = ViewStateManager.getViewFromViewState<DialogueModel>(_dialogViewIndex);
+                userView = ViewStateManager.getViewFromViewState<SingleDialogueModelHelper>(_dialogViewIndex);
             }
             catch (KeyNotFoundException)
             {
-                userView = new DialogueModel();
+                userView = new SingleDialogueModelHelper();
             }
 
             RAM_HelloWorldRepository rep = new RAM_HelloWorldRepository();
@@ -57,7 +56,6 @@ namespace AspMvcBasementHelloWorld.Controllers
             //viewProcessor.InvokeUserActions();
             viewProcessor.InvokeUserActions(ExtractRequestActions_Index());
             //viewProcessor.InvokeUserAction(new Dialog_UserActions.Action_SetSelectedLanguage {newLang = "de"});
-
 
             return View("Index", viewProcessor.UserView);
         }
@@ -78,12 +76,12 @@ namespace AspMvcBasementHelloWorld.Controllers
             {
                 string val = Request.Form[k];
 
-                if (k == DialogueModel.SetLanguageButtonName) { needLanguageToSelect = true; }
-                else if (k == DialogueModel.languageDropDownName) { languageToSelect = val; }
-                else if (k == DialogueModel.reportNameTextBoxName) { submittedUserName = val; }
-                else if (k == DialogueModel.reportNameButtonName) { isUserNameSubmitted = true; }
-                else if (k == DialogueModel.chatAgainNOButtonName) { isAnsewerChatAgainSubmitted = true; }
-                else if (k == DialogueModel.chatAgainYESButtonName) { isAnsewerChatAgainSubmitted = true; needChatAgain = true; }
+                if (k == SingleDialogueModelHelper.SetLanguageButtonName) { needLanguageToSelect = true; }
+                else if (k == SingleDialogueModelHelper.languageDropDownName) { languageToSelect = val; }
+                else if (k == SingleDialogueModelHelper.reportNameTextBoxName) { submittedUserName = val; }
+                else if (k == SingleDialogueModelHelper.reportNameButtonName) { isUserNameSubmitted = true; }
+                else if (k == SingleDialogueModelHelper.chatAgainNOButtonName) { isAnsewerChatAgainSubmitted = true; }
+                else if (k == SingleDialogueModelHelper.chatAgainYESButtonName) { isAnsewerChatAgainSubmitted = true; needChatAgain = true; }
             }
 
             if (needLanguageToSelect) { ausgabe.AddUserAction(_dialogViewIndex, new Dialog_Processor.Action_SetSelectedLanguage { newLang = languageToSelect }); }

@@ -11,8 +11,11 @@ using BasementHelloWorldCommonParts.Repositories;
 
 namespace AspMvcBasementHelloWorld.Controllers
 {
-    public class HomeController : Controller
+
+
+    public class MultiDController : Controller
     {
+
         private int _multiDialogViewIndex
         {
             get
@@ -82,7 +85,7 @@ namespace AspMvcBasementHelloWorld.Controllers
 
                 if (k == MultiDialogueModel.AddNewLanguageButtonName) { needAddNewLanguage = true; }
                 else if (k == MultiDialogueModel.RemoveOldLanguageButtonName) { needRemoveOldLanguage = true; }
-                else if (k.StartsWith(SingleDialogueModelHelper.ControlNamePrefix))
+                else if (k.StartsWith(SingleDialogueModelHelper.ControlNamePrefix)) 
                 {
                     subViewID = SingleDialogueModelHelper.extractSubViewIdFromControlNameWithPrefix(k);
                     string subViewControlName = SingleDialogueModelHelper.extractRawControlName(k);
@@ -112,12 +115,6 @@ namespace AspMvcBasementHelloWorld.Controllers
             return ausgabe;
         }
 
-        //
-        // GET: /MultiD/links
-        public ActionResult links()
-        {
-            return View("links");
-        }
         #endregion //user actions
 
     }

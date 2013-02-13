@@ -27,7 +27,7 @@ namespace MvcProjectTests
                     ausgabe = ViewStateManager.getViewFromViewState<Mock_UI_DialogWithUser>(viewID);
                     break;
                 case GuiToTest.AspMvcApplication:
-                    ausgabe = ViewStateManager.getViewFromViewState<DialogueModel>(viewID);
+                    ausgabe = ViewStateManager.getViewFromViewState<SingleDialogueModelHelper>(viewID);
                     break;
                 default:
                     throw new NotImplementedException();

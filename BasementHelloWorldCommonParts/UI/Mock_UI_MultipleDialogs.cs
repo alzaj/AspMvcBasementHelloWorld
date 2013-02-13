@@ -12,5 +12,12 @@ namespace BasementHelloWorldCommonParts.UI
             get { return _subViews_DialogWithUser; }
             set { _subViews_DialogWithUser = value; }
         }
+
+        public bool boolProp_isActionPossible_AddNewDialog
+        { get; set; }
+
+        public bool boolProp_isActionPossible_RemoveLastDialog 
+        { get; set; }
+
     }
 }
